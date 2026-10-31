@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お話し相手AI（お年寄り向け）</title>
+    <!-- Gradio-Liteの読み込み -->
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/@gradio/lite@0.5.0/dist/lite.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gradio/lite@0.5.0/dist/lite.css" />
+</head>
+<body>
+    <gradio-lite>
+import gradio as gr
+
+def predict(message, history):
+    # 安全ガードレール機能を含むロジック
+    if any(word in message for word in ["痛い", "体調", "腰", "膝", "頭", "熱", "苦しい", "気分が悪い"]):
+        return "そのお身体の不調はとても心配ですね。自己判断せず、必ずお医者さんに診てもらってくださいね。無理をせずゆっくり休んでください。"
+    return f"お話ししてくれてありがとう。「{message}」ですね。今日も穏やかに、ゆっくりお過ごしくださいね。"
+
+demo = gr.ChatInterface(
+    fn=predict,
+    title="お話し相手AI（お年寄り向け）",
+    description="日々のちょっとしたお話や相談ができる優しいAIです。ゆっくりお話ししましょう。",
+    textbox=gr.Textbox(placeholder="ここにお話ししたいことを書いてね...", container=False, scale=7)
+)
+
+demo.launch()
+    </gradio-lite>
+</body>
+</html>
